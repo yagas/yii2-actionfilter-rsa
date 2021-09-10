@@ -1,0 +1,21 @@
+{
+    "name": "the24/yii2-actionfilter-rsa",
+    "description": "RSA Verify Filter",
+    "type": "yii2-extension",
+    "keywords": ["yii2","extension"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Weihua Lu",
+            "email": "yagas@sina.com"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "~2.0.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "yagas\\filters\\": "src/"
+        }
+    }
+}
