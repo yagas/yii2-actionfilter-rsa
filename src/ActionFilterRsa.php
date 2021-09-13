@@ -12,6 +12,7 @@ class ActionFilterRsa extends ActionFilter {
 
     public $algorithms = OPENSSL_ALGO_SHA256;
 
+    /** @var InterfaceSign $funHandle */
     public $funHandle;
 
     /**
