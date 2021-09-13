@@ -10,7 +10,7 @@ class ActionFilterRsa extends ActionFilter {
 
     public $publicKey = '@app/runtime/publicKey.pem';
 
-    public $algorithms;
+    public $algorithms = OPENSSL_ALGO_SHA256;
 
     public $funHandle;
 
