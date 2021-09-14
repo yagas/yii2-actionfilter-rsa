@@ -32,7 +32,9 @@ class ActionFilterRsa extends ActionFilter {
             }
 
             $state = \openssl_verify($SignString, $sign, $pk, $this->algorithms);
-            return $state === 1;
+            if ($state !== 1) {
+                throw new ErrorException(Yii::t('Signature validation has failed'));
+            }
         }
         
         return true;
