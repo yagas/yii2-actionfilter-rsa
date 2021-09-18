@@ -26,7 +26,7 @@ class ActionFilterRsa extends ActionFilter {
                 throw new ErrorException(Yii::t('app', 'Failed to load the public key file.'));
             }
 
-            $SignString = \call_user_func($this->funHandle, Yii::$app->request);
+            $SignString = \call_user_func([$this->funHandle, 'Sign'], Yii::$app->request);
             if (!$SignString) {
                 throw new ErrorException(Yii::t('app', 'Failed to get sign string.'));
             }

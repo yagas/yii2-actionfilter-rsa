@@ -2,8 +2,12 @@
     "name": "the24/yii2-actionfilter-rsa",
     "description": "RSA Verify Filter",
     "type": "yii2-extension",
-    "keywords": ["yii2","extension"],
+    "keywords": [
+        "yii2",
+        "extension"
+    ],
     "license": "MIT",
+    "minimum-stability": "dev",
     "authors": [
         {
             "name": "Weihua Lu",
@@ -17,5 +21,10 @@
         "psr-4": {
             "yagas\\filters\\": "src/"
         }
+    },
+    "require-dev": {
+        "codeception/codeception": "4.1.x-dev",
+        "codeception/module-phpbrowser": "^1.0.0",
+        "codeception/module-asserts": "^1.0.0"
     }
 }
