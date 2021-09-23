@@ -9,5 +9,5 @@ interface InterfaceSign {
      * 
      * @param mixed $params 待签名的数据
      */
-    public static function Sign($params);
+    public function Sign($params);
 }

@@ -4,9 +4,11 @@ define('DS', DIRECTORY_SEPARATOR);
 
 require __DIR__ . '/../../vendor/autoload.php';
 require __DIR__ . '/../../vendor/yiisoft/yii2/Yii.php';
+require __DIR__ . '/../resource/MyHandle.php';
 
-use Yii;
 use yii\base\Action;
+use yii\base\Module;
+use yii\console\Controller;
 use yagas\filters\ActionFilterRsa;
 
 class TestRsaVerifyTest extends \Codeception\Test\Unit
@@ -19,10 +21,11 @@ class TestRsaVerifyTest extends \Codeception\Test\Unit
     protected function _before()
     {
         // 初始化构建测试环境
-        Yii::setAlias('@app/runtime', dirname(__DIR__) . DS . 'resource');
-        // Yii::$container->set('yii\base\Module', ['test-module']);
-        // Yii::$container->set('yii\web\Controller', ['id' => 'test-controller']);
-        Yii::$container->set('yii\base\Action', 'test-action');
+        Yii::setAlias('@app/runtime', dirname(__DIR__));
+        $controller = new Controller('test', null);
+        Yii::$container->set('yii\base\Action', function() use($controller){
+            return new Action('test', $controller);
+        });
     }
 
     protected function _after()
@@ -33,16 +36,14 @@ class TestRsaVerifyTest extends \Codeception\Test\Unit
     public function testSomeFeature()
     {
         $components = Yii::createObject([
-            'class' => ActionFilterRsa::class
+            'class' => ActionFilterRsa::class,
+            'publicKey' => '@app/runtime/resource/publicKey.pem',
+            'funHandle' => new MyHandle()
         ]);
 
-        codecept_debug(Yii::$container->get('yii\base\Action'));
+        $action = Yii::$container->get('yii\base\Action');
+        $components->beforeAction( $action );
 
-        // $components->beforeAction(Yii::$container->get('yii\base\Action'));
-
-        // $publicKey = Yii::getAlias($components->publicKey);
-        // if (is_file($publicKey)) {
-        //     codecept_debug($publicKey);
-        // }        
+        // codecept_debug($components);
     }
 }

@@ -21,9 +21,18 @@ class ActionFilterRsa extends ActionFilter {
     public function beforeAction($action)
     {
         if ($this->isActive($action)) {
-            $pk = \openssl_pkey_get_public( Yii::getAlias($this->publicKey) );
+            $publicKey = realpath(Yii::getAlias($this->publicKey));
+            if (!is_file($publicKey)) {
+                throw new ErrorException(Yii::t('app', 'Not found public key file: '.$publicKey.'.'));
+            }
+
+            $pk = \openssl_pkey_get_public( 'file://'.$publicKey );
             if (!$pk) {
-                throw new ErrorException(Yii::t('app', 'Failed to load the public key file.'));
+                throw new ErrorException(Yii::t('app', 'Failed to load the public key file: '.$publicKey.'.'));
+            }
+
+            if (!($this->funHandle instanceof InterfaceSign)) {
+                throw new ErrorException(Yii::t('app', 'Invalid function handle.'));
             }
 
             $SignString = \call_user_func([$this->funHandle, 'Sign'], Yii::$app->request);
