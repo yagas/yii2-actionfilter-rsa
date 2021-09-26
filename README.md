@@ -29,7 +29,7 @@ Once the extension is installed, simply use it in your code by  :
 
 ```php
 SiteController extends Controller {
-    public function behavios()
+    public function behaviors()
     {
       return [
         'rsa_filter' => [
