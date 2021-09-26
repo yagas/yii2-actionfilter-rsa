@@ -1,5 +1,5 @@
 {
-    "name": "the24/yii2-actionfilter-rsa",
+    "name": "yagas/yii2-actionfilter-rsa",
     "description": "RSA Verify Filter",
     "type": "yii2-extension",
     "keywords": [
