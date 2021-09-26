@@ -16,7 +16,7 @@ php composer.phar require --prefer-dist yagas/yii2-actionfilter-rsa "*"
 or add
 
 ```
-"the24/yii2-actionfilter-rsa": "*"
+"yagas/yii2-actionfilter-rsa": "*"
 ```
 
 to the require section of your `composer.json` file.
