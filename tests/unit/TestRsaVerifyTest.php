@@ -48,7 +48,7 @@ class TestRsaVerifyTest extends \Codeception\Test\Unit
     // tests
     public function testSomeFeature()
     {
-        $this->setName('sign string "123456" is False');
+        $this->setName('beforeAction');
 
         $components = Yii::createObject([
             'class' => ActionFilterRsa::class,
@@ -57,7 +57,23 @@ class TestRsaVerifyTest extends \Codeception\Test\Unit
         ]);
 
         $action = Yii::$container->get('yii\base\Action');
-        $this->assertFalse($components->beforeAction( $action ), "121212121212");
+        $this->assertTrue($components->beforeAction( $action ), "sign string \"123456\" is True");
+        
+    }
+
+    // tests
+    public function testSomeFeature1()
+    {
+        $this->setName('beforeAction2');
+
+        $components = Yii::createObject([
+            'class' => ActionFilterRsa::class,
+            'publicKey' => '@app/runtime/resource/publicKey.pem',
+            'funHandle' => new MyHandle()
+        ]);
+
+        $action = Yii::$container->get('yii\base\Action');
+        $this->assertFalse($components->beforeAction( $action ), "sign string \"123456\" is False");
         
     }
 }

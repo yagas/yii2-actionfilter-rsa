@@ -23,36 +23,36 @@ class ActionFilterRsa extends ActionFilter {
         if ($this->isActive($action)) {
             $publicKey = realpath(Yii::getAlias($this->publicKey));
             if (!is_file($publicKey)) {
-                // Yii::debug(Yii::t('app', 'Not found public key file: '.$publicKey.'.'));
+                Yii::error(Yii::t('app', 'Not found public key file: '.$publicKey.'.'));
                 return false;
             }
 
             $pk = \openssl_pkey_get_public( 'file://'.$publicKey );
             if (!$pk) {
-                // Yii::debug(Yii::t('app', 'Failed to load the public key file: '.$publicKey.'.'));
+                Yii::error(Yii::t('app', 'Failed to load the public key file: '.$publicKey.'.'));
                 return false;
             }
 
             if (!($this->funHandle instanceof InterfaceSign)) {
-                Yii::debug(Yii::t('app', 'Invalid function handle.'));
+                Yii::error(Yii::t('app', 'Invalid function handle.'));
                 return false;
             }
 
             $SignString = \call_user_func([$this->funHandle, 'toSign'], Yii::$app->request);
             if (!$SignString) {
-                // Yii::debug(Yii::t('app', 'Failed to get toSign string.'));
+                Yii::error(Yii::t('app', 'Failed to get toSign string.'));
                 return false;
             }
 
             $sign = \call_user_func([$this->funHandle, 'getSign']);
             if (!$sign) {
-                // Yii::debug(Yii::t('app', 'Failed to get sign string.'));
+                Yii::error(Yii::t('app', 'Failed to get sign string.'));
                 return false;
             }
 
             $state = \openssl_verify($SignString, $sign, $pk, $this->algorithms);
             if ($state !== 1) {
-                // Yii::debug(Yii::t('app', 'Signature validation has failed'));
+                Yii::error(Yii::t('app', 'Signature validation has failed.'));
                 return false;
             }
         }
