@@ -23,26 +23,37 @@ class ActionFilterRsa extends ActionFilter {
         if ($this->isActive($action)) {
             $publicKey = realpath(Yii::getAlias($this->publicKey));
             if (!is_file($publicKey)) {
-                throw new ErrorException(Yii::t('app', 'Not found public key file: '.$publicKey.'.'));
+                // Yii::debug(Yii::t('app', 'Not found public key file: '.$publicKey.'.'));
+                return false;
             }
 
             $pk = \openssl_pkey_get_public( 'file://'.$publicKey );
             if (!$pk) {
-                throw new ErrorException(Yii::t('app', 'Failed to load the public key file: '.$publicKey.'.'));
+                // Yii::debug(Yii::t('app', 'Failed to load the public key file: '.$publicKey.'.'));
+                return false;
             }
 
             if (!($this->funHandle instanceof InterfaceSign)) {
-                throw new ErrorException(Yii::t('app', 'Invalid function handle.'));
+                Yii::debug(Yii::t('app', 'Invalid function handle.'));
+                return false;
             }
 
-            $SignString = \call_user_func([$this->funHandle, 'Sign'], Yii::$app->request);
+            $SignString = \call_user_func([$this->funHandle, 'toSign'], Yii::$app->request);
             if (!$SignString) {
-                throw new ErrorException(Yii::t('app', 'Failed to get sign string.'));
+                // Yii::debug(Yii::t('app', 'Failed to get toSign string.'));
+                return false;
+            }
+
+            $sign = \call_user_func([$this->funHandle, 'getSign']);
+            if (!$sign) {
+                // Yii::debug(Yii::t('app', 'Failed to get sign string.'));
+                return false;
             }
 
             $state = \openssl_verify($SignString, $sign, $pk, $this->algorithms);
             if ($state !== 1) {
-                throw new ErrorException(Yii::t('Signature validation has failed'));
+                // Yii::debug(Yii::t('app', 'Signature validation has failed'));
+                return false;
             }
         }
         

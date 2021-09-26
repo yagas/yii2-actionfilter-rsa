@@ -9,7 +9,9 @@ require __DIR__ . '/../resource/MyHandle.php';
 use yii\base\Action;
 use yii\base\Module;
 use yii\console\Controller;
+use yii\console\Request;
 use yagas\filters\ActionFilterRsa;
+use yii\console\Application;
 
 class TestRsaVerifyTest extends \Codeception\Test\Unit
 {
@@ -26,6 +28,17 @@ class TestRsaVerifyTest extends \Codeception\Test\Unit
         Yii::$container->set('yii\base\Action', function() use($controller){
             return new Action('test', $controller);
         });
+
+        $app = new Application([
+            'id' => 'test',
+            'basePath' => dirname(__DIR__)
+        ]);
+        
+        Yii::$app->request->setParams([
+            'a' => 123,
+            'b' => 456
+        ]);
+    
     }
 
     protected function _after()
@@ -35,6 +48,8 @@ class TestRsaVerifyTest extends \Codeception\Test\Unit
     // tests
     public function testSomeFeature()
     {
+        $this->setName('sign string "123456" is False');
+
         $components = Yii::createObject([
             'class' => ActionFilterRsa::class,
             'publicKey' => '@app/runtime/resource/publicKey.pem',
@@ -42,8 +57,7 @@ class TestRsaVerifyTest extends \Codeception\Test\Unit
         ]);
 
         $action = Yii::$container->get('yii\base\Action');
-        $components->beforeAction( $action );
-
-        // codecept_debug($components);
+        $this->assertFalse($components->beforeAction( $action ), "121212121212");
+        
     }
 }
