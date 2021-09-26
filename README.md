@@ -10,7 +10,7 @@ The preferred way to install this extension is through [composer](http://getcomp
 Either run
 
 ```
-php composer.phar require --prefer-dist the24/yii2-actionfilter-rsa "*"
+php composer.phar require --prefer-dist yagas/yii2-actionfilter-rsa "*"
 ```
 
 or add
@@ -28,4 +28,16 @@ Usage
 Once the extension is installed, simply use it in your code by  :
 
 ```php
-<?= \yagas\filters\AutoloadExample::widget(); ?>```
+SiteController extends Controller {
+    public function behavios()
+    {
+      return [
+        'rsa_filter' => [
+            'class' => ActionFilterRsa::class,
+            'publicKey' => '@app/runtime/resource/publicKey.pem',
+            'funHandle' => new MyHandle()
+        ]
+      ];
+    }
+}
+```
